@@ -1,4 +1,4 @@
-const CACHE_NAME = 'my-app-cache-v1';
+const CACHE_NAME = 'my-app-cache-v2'; // قم بتغيير اسم الكاش لبدء نسخة جديدة
 const urlsToCache = [
     '/collectionprogram/',                      // المسار الرئيسي للمجلد
     '/collectionprogram/index.html',            // الصفحة الرئيسية
@@ -25,6 +25,8 @@ self.addEventListener('install', (event) => {
                 return cache.addAll(urlsToCache);
             })
     );
+    // فرض التفعيل فورًا بعد التثبيت
+    self.skipWaiting();
 });
 
 // تفعيل Service Worker
@@ -41,6 +43,8 @@ self.addEventListener('activate', (event) => {
             );
         })
     );
+    // التأكد من التحكم في كل التابات النشطة
+    self.clients.claim();
 });
 
 // الاستجابة للطلبات
@@ -48,14 +52,30 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request)
             .then((response) => {
-                // إذا كانت الاستجابة موجودة في الكاش، ارجعها، وإذا لم تكن، فقم بعمل fetch من الشبكة
-                return response || fetch(event.request).then((networkResponse) => {
+                // إذا كانت الاستجابة موجودة في الكاش، ارجعها
+                if (response) {
+                    return response;
+                }
+                
+                // طلب جديد من الشبكة
+                return fetch(event.request).then((networkResponse) => {
+                    if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+                        return networkResponse;
+                    }
+
+                    // تخزين النسخة الجديدة في الكاش
                     return caches.open(CACHE_NAME).then((cache) => {
-                        // تخزين النسخة الجديدة في الكاش
                         cache.put(event.request, networkResponse.clone());
                         return networkResponse;
                     });
                 });
             })
     );
+});
+
+// إضافة منطق تحديث Service Worker تلقائياً
+self.addEventListener('message', (event) => {
+    if (event.data.action === 'skipWaiting') {
+        self.skipWaiting();
+    }
 });
