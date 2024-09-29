@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بحث عن بيانات العملاء </title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+    <style>
+h1 {
+    font-size: 36px;
+    margin: 0;
+    position: absolute;
+    top: 80px; /* Adjust this value to move the heading down if needed */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: transparent;
+    background: linear-gradient(135deg, #ffffff, #fcf6f6);
+    -webkit-background-clip: text; /* Chrome, Safari */
+    -moz-background-clip: text;    /* Firefox */
+    background-clip: text;          /* Standard property */
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 6px rgb(253, 253, 253);
+    font-weight: 700;
+}
+
+/* Styles for mobile devices */
+@media only screen and (max-width: 600px) {
+    h1 {
+        font-size: 20px;
+        margin-top: 30px; /* Adjust this value to position the heading lower */
+        margin-bottom: 20px;
+    }
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 100px); /* Adjust this value to make space for the heading */
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    margin-top: 15px;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.9); /* شفافية أكبر */
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* حدود شفافة */
+    font-size: 16px;
+}
+
+thead {
+    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), 
+                linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+    background-blend-mode: multiply;
+    -webkit-background-clip: text; /* Chrome, Safari */
+    -moz-background-clip: text;    /* Firefox */
+    background-clip: text;          /* Standard property */
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+
+th {
+    font-weight: bold;
+}
+
+td {
+    background: rgba(255, 255, 255, 0.9); 
+    color: transparent; /* هذا قد لا يكون ضروريًا مع استخدام الخلفية المتدرجة */
+    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), 
+                linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+    background-blend-mode: multiply;
+    -webkit-background-clip: text; /* Chrome, Safari */
+    -moz-background-clip: text;    /* Firefox */
+    background-clip: text;          /* Standard property */
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+
+/* إضافة هذا الأسلوب لعنصر الحاوية للجدول لتفعيل التمرير الأفقي */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+/* ضمان أن الجدول لا يتجاوز حاويته */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.9); /* شفافية أكبر */
+    min-width: 600px; /* يمكن تعديل هذا حسب الحاجة */
+}
+
+/* تحسين عرض الجدول على الشاشات الصغيرة */
+@media only screen and (max-width: 600px) {
+    table {
+        font-size: 14px; /* تقليل حجم الخط على الشاشات الصغيرة */
+    }
+}
+    .container {
+        height: calc(100vh - 70px); /* Adjust this value to make space for the heading */
+    }
+}
+        .input-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 20px;
+            font-size: 20px;
+            width: 70%;
+            border: 1px solid rgba(0, 0, 0, 0.5); /* حدود شفافة */
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+            background: rgba(255, 255, 255, 0.5); /* شفافية أكبر */
+            margin-right: 10px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #666;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+    button {
+    padding: 20px;
+    font-size: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.5); 
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.5); 
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 500%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%); 
+    transition: width 0.4s ease, height 0.4s ease;
+    border-radius: 100%;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+}
+button:hover::before {
+    width: 0;
+    height: 0;
+}
+
+button span {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), 
+                linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+    -webkit-background-clip: text; /* Chrome, Safari */
+    -moz-background-clip: text;    /* Firefox */
+    background-clip: text;          /* Standard property */
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+
+button:hover {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transform: rotate(5deg);
+}
+
+        .success-message, .error-message {
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .success-message {
+            color: WHITE;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 15px;
+            border-collapse: collapse;
+            background-color: rgba(255, 255, 255, 0.9); /* شفافية أكبر */
+        }
+
+        th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.1); 
+    font-size: 16px;
+}
+
+th {
+    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%),
+                linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+    background-blend-mode: multiply;
+    -webkit-background-clip: text; /* Chrome, Safari */
+    -moz-background-clip: text;    /* Firefox */
+    background-clip: text;          /* Standard property */
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+
+td {
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    color: transparent;
+    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%),
+                linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+    background-blend-mode: multiply;
+    -webkit-background-clip: text; /* Chrome, Safari */
+    -moz-background-clip: text;    /* Firefox */
+    background-clip: text;          /* Standard property */
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+        @media only screen and (max-width: 600px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            button {
+                font-size: 20px;
+                padding: 15px;
+            }
+
+            input {
+                font-size: 20px;
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 20px;
+            }
+
+            input, button {
+                font-size: 15px;
+                padding: 10px;
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .main-menu-button {
+    background: rgba(255, 255, 255, 0.5); /* لون الزر الأبيض */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* حدود شفافة */
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5); /* تأثير الظل للنص */
+    text-align: center; /* محاذاة النص في المنتصف */
+}
+
+.main-menu-button::before {
+    content: '';
+    position: absolute;
+    top: 500%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    transition: width 0.4s ease, height 0.4s ease;
+    border-radius: 100%;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+}
+
+.main-menu-button:hover {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transform: rotate(5deg);
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>بحث عن بيانات العملاء</h1>
+        <div class="input-container">
+            <input type="text" id="searchTerm" placeholder="أكتب رقم الحساب هنا" oninput="handleInput()">
+            <button onclick="searchExcel()"><span>بحث</span></button>
+        </div>
+        <div id="message" class="success-message"></div>
+        <div id="results" class="table-container"></div>
+        <button class="main-menu-button" onclick="window.location.href='index.html'">القائمة الرئيسية</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script>
+        let excelData = [];
+
+        window.onload = function() {
+            const fileUrl = 'https://docs.google.com/spreadsheets/d/1ejXhQVxlYtUEroB_7asXbKs4ogD7EBdBg6uJyJz19pY/export?format=xlsx';
+            fetch(fileUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('خطأ في تحميل الملف من Google Drive');
+                    }
+                    return response.arrayBuffer();
+                })
+                .then(data => {
+                    const workbook = XLSX.read(data, { type: 'array' });
+
+                    workbook.SheetNames.forEach(function(sheetName) {
+                        const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
+                        excelData.push({ sheetName, sheetData });
+                    });
+
+                    document.getElementById('message').textContent = 'أبداء البحث الآن';
+                })
+                .catch(error => {
+                    document.getElementById('message').textContent = 'حدث خطأ أثناء تحميل الملف.';
+                    console.error('Error loading the file:', error);
+                });
+        };
+
+        function searchExcel() {
+    const searchTerm = document.getElementById('searchTerm').value.trim().toLowerCase();
+    if (!searchTerm) {
+        document.getElementById('results').innerHTML = '<p>يرجى إدخال نص للبحث.</p>';
+        return;
+    }
+
+    let resultsHTML = '';
+    let found = false;
+
+    excelData.forEach(sheet => {
+        const columnHeaders = sheet.sheetData[0]; // العناوين (الصف الأول)
+        const dataRows = sheet.sheetData.slice(1); // البيانات (الصفوف التالية)
+
+        // البحث في البيانات
+        dataRows.forEach(row => {
+            const rowText = row.map(cell => (cell || '')).join(' | ').toLowerCase();
+            if (rowText.includes(searchTerm)) {
+                found = true;
+                if (!resultsHTML) {
+                    // عرض العناوين عند العثور على النتائج
+                    resultsHTML += `<h2>نتائج البحث: ${searchTerm}</h2>`;
+                    resultsHTML += '<table><thead><tr>';
+                    
+                    // عرض العناوين
+                    columnHeaders.forEach(header => {
+                        resultsHTML += `<th>${header}</th>`;
+                    });
+                    resultsHTML += '</tr></thead><tbody>';
+                }
+
+                resultsHTML += '<tr>';
+                // عرض القيم في الأعمدة المطابقة للعناوين
+                columnHeaders.forEach((header, index) => {
+                    const cell = row[index]; // لكل عنوان، نعرض القيمة من نفس العمود
+                    resultsHTML += `<td>${cell === undefined || cell === null || cell === '' ? '' : cell}</td>`;
+                });
+                resultsHTML += '</tr>';
+            }
+        });
+
+        if (found) {
+            resultsHTML += '</tbody></table>'; // إغلاق الجدول بعد العثور على النتائج
+        }
+    });
+
+    if (!found) {
+        resultsHTML = '<p>لم يتم العثور على نتائج.</p>';
+    }
+
+    document.getElementById('results').innerHTML = resultsHTML;
+    document.getElementById('results').style.display = 'block';
+}
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/collectionprogram/service-worker.js') // تأكد من المسار الصحيح
+            .then((registration) => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch((error) => {
+                console.error('Service Worker registration failed:', error);
+            });
+    });
+}
+
+
+    </script>
+</body>
+</html>

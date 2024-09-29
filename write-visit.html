@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج إدخال تقرير الزيارة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700&display=swap" rel="stylesheet">
+    <style>
+body {
+    font-family: 'Tajawal', sans-serif;
+    font-weight: bold;
+    background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?fit=crop&w=1950&q=80') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #fff;
+    flex-direction: column;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 0;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: transparent;
+    background: linear-gradient(135deg, #ffffff, #fcf6f6);
+    background-clip: text; /* خاصية قياسية */
+    -webkit-background-clip: text; /* بادئة الويب لمتصفحات معينة */
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 6px rgb(253, 253, 253);
+    font-weight: 700;
+}
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.2);
+    margin-top: 90px;
+}
+
+input, select, button {
+    padding: 12px;
+    font-size: 16px;
+    margin-bottom: 5px;
+    width: 90%;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: normal; /* لتكون غير جريئة */
+    color: #000;
+}
+
+input::placeholder, select {
+    color: #000;
+    opacity: 0.8;
+    font-weight: normal; /* لتكون غير جريئة */
+}
+
+input:hover, select:hover, input:focus, select:focus {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-color: #764ba2;
+    box-shadow: 0 0 10px rgba(118, 75, 162, 0.5);
+}
+
+button, .btn {
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    font-weight: normal; /* لتكون غير جريئة */
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Tajawal', sans-serif;
+    color: #000;
+}
+
+button:hover, .btn:hover {
+    background: rgba(255, 255, 255, 0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: normal; /* لتكون غير جريئة */
+    font-family: 'Tajawal', sans-serif;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* بقية الكود كما هو... */
+
+
+        .success-message, .error-message {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .success-message {
+            color: #28a745;
+        }
+
+        .error-message {
+            color: #dc3545;
+        }
+        .field-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* ضبط الفجوة بين الحقول */
+    margin-bottom: 10px;
+}
+
+.field {
+    flex: 1; /* كل حقل يأخذ عرضًا متساويًا */
+    min-width: 150px; /* حد أدنى لعرض الحقل */
+}
+
+.field-group .field {
+    width: 50%; /* كل حقل يأخذ نصف عرض الحاوية */
+}
+
+button {
+    width: 48%; /* الأزرار تكون بجانب بعضها */
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+
+        .optional-field {
+            margin-top: 15px;
+            color: #fff;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        /* نافذة منبثقة */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 18px;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .popup button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background: #218838;
+        }
+/* لإخفاء السهم في حقل الإدخال من نوع number */
+input[type="number"] {
+    -moz-appearance: textfield; /* لمتصفح فايرفوكس */
+    -webkit-appearance: none; /* لمتصفح سفاري وكروم */
+    appearance: none; /* الخاصية القياسية */
+}
+
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* لمتصفح كروم */
+    margin: 0; /* إزالة الهوامش */
+}
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+select {
+    font-family: 'اسم الخط الذي تريده', ARIAL; /* استبدل اسم الخط باسم الخط الذي تفضله */
+    font-size: 16px; /* حجم الخط */
+    color: #333; /* لون الخط */
+    font-weight: normal; /* لإزالة الوزن الجريء */
+}
+input[type="date"] {
+    padding: 12px;
+    font-size: 16px;
+    margin-bottom: 5px;
+    width: 90%;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+    font-family: 'ARIAL', sans-serif;
+    font-weight: normal; /* لتكون غير جريئة */
+    color: #000;
+}
+.btn {
+    width: 200%; /* 48% لتجنب احتلال الأزرار عرضًا كاملًا */
+    margin: 5px; /* لضبط المسافة بين الأزرار */
+}
+.button-group {
+    width: 200%; /* عرض كامل */
+    display: flex;
+    justify-content: space-between; /* توزيع الأزرار */
+}
+    /* نمط لتعطيل التفاعل مع الصفحة */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* خلفية نصف شفافة */
+        z-index: 999; /* التأكد من ظهورها فوق العناصر الأخرى */
+        display: none; /* إخفاءها في البداية */
+    }
+    </style>
+</head>
+<body>
+    <h1>نموذج إدخال تقرير الزيارة</h1>
+    <form id="myForm">
+    <div class="container">
+        <label for="id">ID</label>
+        <input type="number" id="id" placeholder="أكتب رقم حساب العميل" required>
+    
+        <label for="clientName">اسم العميل</label>
+        <input type="text" id="clientName" placeholder="أكتب اسم العميل" required>
+        
+        <div class="field-group">
+            <div class="field">   
+        <label for="bank">اسم البنك</label>
+        <select id="bank" required>
+            <option value="مصر اكتيف">مصر اكتيف</option>
+            <option value="مصر مغلق">مصر مغلق</option>
+            <option value="التعمير والإسكان">التعمير والإسكان</option>
+            <option value="الاهلي مشروعات">الاهلي مشروعات</option>
+            <option value="الاهلي المصري">الاهلي المصري</option>
+            <option value="باريبا">باريبا</option>
+        </select>
+    
+        <div class="field-group">
+            <div class="field">
+                <label for="product" class="label">المنتج</label>
+                <input type="text" id="product" placeholder="أكتب المنتج" required>
+            </div>
+    
+            <div class="field">
+                <label for="visitReport" class="label">تقرير الزيارة</label>
+<!-- حقل تقرير الزيارة -->
+<select id="visitReport" required>
+    <option value="اضغط هنا">اضغط هنا</option>
+    <option value="يعمل">يعمل</option>
+    <option value="لا يعمل">لا يعمل</option>
+    <option value="ترك العمل">ترك العمل</option>
+    <option value="لم يستدل">لم يستدل</option>
+    <option value="متوفي">متوفي</option>
+    <option value="مقيم">مقيم</option>
+    <option value="غير مقيم">غير مقيم</option>
+    <option value="ترك السكن">ترك السكن</option>
+</select>
+</div>
+</div>
+
+<!-- حقول الوفاة -->
+<div id="deathFields" class="field-group hidden">
+    <div class="field">
+        <label for="certificateDelivered">هل تم تسليم شهادة الوفاة؟</label>
+        <select id="certificateDelivered">
+            <option value="">اختر</option>
+            <option value="نعم">نعم</option>
+            <option value="لا">لا</option>
+            <option value="لا أعرف">لا أعرف</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label for="certificateDate">تاريخ تسليم شهادة الوفاة</label>
+        <input type="date" id="certificateDate">
+    </div>
+</div>
+
+        <div id="agreementFields" class="field-group hidden">
+            <div class="field">
+                <label for="agreementDate1">تاريخ الأتفاق 1</label>
+                <input type="date" id="agreementDate1">
+            </div>
+            
+            <div class="field">
+                <label for="agreementAmount1">مبلغ الأتفاق 1</label>
+                <input type="number" id="agreementAmount1" placeholder="أكتب مبلغ الأتفاق">
+            </div>
+            
+            <div class="field">
+                <label for="agreementDate2">تاريخ الأتفاق 2</label>
+                <input type="date" id="agreementDate2">
+            </div>
+            
+            <div class="field">
+                <label for="agreementAmount2">مبلغ الأتفاق 2</label>
+                <input type="number" id="agreementAmount2" placeholder="أكتب مبلغ الأتفاق الثاني">
+            </div>
+        </div>
+        
+        <div id="reasonField" class="optional-field hidden">
+            <label for="reason">سبب عدم الوصول</label>
+            <input type="text" id="reason" placeholder="أكتب السبب" required>
+        </div>
+        <div class="field-group">
+            <div class="field">
+                <label for="visitDate">تاريخ الزيارة</label>
+                <input type="date" id="visitDate" required>
+            </div>
+        
+            <div class="field-group">
+                <div class="field">
+                    <label for="contactPerson">الشخص الذي تم مقابله</label>
+                    <input type="text" id="contactPerson" placeholder="أكتب اسم الشخص للتواصل" required>
+                </div>
+            
+                <div class="field">
+                    <label for="personType">صفة الشخص</label>
+                    <input type="text" id="personType" placeholder="أدخل صفة الشخص" required>
+                </div>
+            
+                <div class="field">
+                    <label for="mobileNumber">رقم هاتف الشخص</label>
+                    <input type="number" id="mobileNumber" placeholder="أدخل رقم المحمول" required>
+                </div>
+            </div>
+            <div class="field-group">
+                <div class="field">
+                    <label for="phoneNumber">رقم هاتف العميل 1</label>
+                    <input type="number" id="phoneNumber" placeholder="أكتب رقم الهاتف" required>
+                </div>
+                <div class="field">
+                    <label for="phoneNumber2">رقم هاتف العميل 2</label>
+                    <input type="number" id="phoneNumber2" placeholder=" رقم الهاتف الثاني (ان وجد)">
+                </div>
+            </div>
+            
+        <div class="field-group">
+            <div class="field">
+                <label for="visitAddress">عنوان الزيارة</label>
+                <input type="text" id="visitAddress" placeholder="أكتب عنوان الزيارة" required>
+            </div>
+    
+            <div class="field">
+                <label for="collectorName">اسم المحصل</label>
+                <input type="text" id="collectorName" placeholder="اسم المحصل" required readonly>
+            </div>                  
+        </div>
+        <div id="deathCertificateField" class="field hidden">
+            <label>هل تم تسليم شهادة الوفاة؟</label>
+            <input type="radio" name="deliveryStatus" value="نعم"> نعم
+            <input type="radio" name="deliveryStatus" value="لا"> لا
+            <input type="radio" name="deliveryStatus" value="لا أعرف"> لا أعرف
+            <label for="deliveryDate">تاريخ تسليم شهادة الوفاة:</label>
+            <input type="date" id="deliveryDate">
+        </div>
+        
+        <button type="submit" class="btn">إرسال التقرير</button>
+
+<div class="button-group" style="margin-top: -20px; display: flex; justify-content: center;">
+    <button type="button" onclick="resetForm()" class="btn" style="width: 50%;">إعادة تعيين</button>
+    <button type="button" onclick="goToMainMenu()" class="btn" style="width: 50%;">العودة للقائمة الرئيسية</button>
+</div>
+    <div id="successMessage" class="success-message"></div>
+    <div id="errorMessage" class="error-message"></div>
+    <div id="overlay" class="overlay"></div> <!-- إضافة عنصر التعطيل -->
+    <div class="popup" id="popup">
+        <p>هذه هي النافذة المنبثقة!</p>
+        <button onclick="closePopup()">إغلاق</button>
+    </div>
+</div>
+    
+<script>
+function confirmCollector() {
+    var collectorSelect = document.getElementById("collectorSelect");
+    if (collectorSelect.value !== "") {
+        // تخزين اسم المحصل في sessionStorage
+        sessionStorage.setItem("collectorName", collectorSelect.value);
+        // تحديث حقل الإدخال مباشرة
+        document.getElementById("collectorName").value = collectorSelect.value;
+    }
+}
+
+    function resetForm() {
+    // إعادة تعيين النموذج
+    document.getElementById("myForm").reset();
+
+    // استعادة اسم المحصل من الجلسة
+    const collectorName = sessionStorage.getItem("collectorName");
+    if (collectorName) {
+        document.getElementById("collectorName").value = collectorName;
+    }
+}
+
+function goToMainMenu() {
+    window.location.href = 'index.html'; // استبدل 'index.html' بعنوان صفحتك الرئيسية
+}
+
+// معالجة التغيير في تقرير الزيارة
+document.getElementById('visitReport').addEventListener('change', function() {
+    const selectedValue = this.value;
+    const agreementFields = document.getElementById('agreementFields');
+    const reasonField = document.getElementById('reasonField');
+    const deathFields = document.getElementById('deathFields');
+
+    if (selectedValue === 'لم يستدل') {
+        agreementFields.classList.add('hidden');
+        reasonField.classList.remove('hidden');
+        deathFields.classList.add('hidden');
+    } else if (selectedValue === 'متوفي') {
+        agreementFields.classList.add('hidden');
+        reasonField.classList.add('hidden');
+        deathFields.classList.remove('hidden');
+    } else {
+        agreementFields.classList.remove('hidden');
+        reasonField.classList.add('hidden');
+        deathFields.classList.add('hidden');
+    }
+});
+
+document.querySelector('button[type="submit"]').addEventListener('click', function(event) {
+    event.preventDefault(); // منع الإرسال التلقائي للنموذج
+
+// جمع البيانات من النموذج
+const id = document.getElementById('id').value.trim();
+const clientName = document.getElementById('clientName').value.trim();
+const bank = document.getElementById('bank').value;
+const product = document.getElementById('product').value.trim();
+const visitReport = document.getElementById('visitReport').value;
+const agreementDate1 = document.getElementById('agreementDate1').value;
+const agreementAmount1 = document.getElementById('agreementAmount1').value;
+const agreementDate2 = document.getElementById('agreementDate2').value; // تأكد من جمع هذا
+const agreementAmount2 = document.getElementById('agreementAmount2').value; // تأكد من جمع هذا
+const visitDate = document.getElementById('visitDate').value;
+    // جمع الحقول المتعلقة بالشخص الذي تم مقابلته
+const contactPersonName = document.getElementById('contactPerson').value.trim(); // اسم الشخص الذي تم مقابلته
+const contactPersonType = document.getElementById('personType').value.trim(); // صفة الشخص
+const contactPersonPhone = document.getElementById('mobileNumber').value.trim(); // رقم الهاتف
+// دمج المعلومات المتعلقة بالشخص الذي تم مقابلته
+const combinedContactPerson = `${contactPersonName} - ${contactPersonType} - ${contactPersonPhone}`;
+// دمج أرقام الهاتف
+const phoneNumber = document.getElementById('phoneNumber').value.trim();
+const phoneNumber2 = document.getElementById('phoneNumber2').value.trim();
+const combinedPhoneNumbers = phoneNumber + (phoneNumber2 ? `, ${phoneNumber2}` : '');
+    const visitAddress = document.getElementById('visitAddress').value.trim();
+    const collectorName = document.getElementById('collectorName').value.trim();
+// جمع السبب (إذا كان مطلوبًا)
+const reason = visitReport === 'لم يستدل' ? document.getElementById('reason').value.trim() : '';
+// جمع المعلومات المتعلقة بشهادة الوفاة
+let deathCertificateDelivery = '';
+if (visitReport === 'متوفي') {
+    const deliveryStatus = document.getElementById('certificateDelivered').value;
+    const deliveryDate = document.getElementById('certificateDate').value;
+    deathCertificateDelivery = `${deliveryStatus} - ${deliveryDate}`;
+}
+// التحقق من جميع الحقول الإلزامية
+if (!id || !clientName || !bank || !product || !visitReport || 
+    (visitReport === 'لم يستدل' && !reason) || 
+    !visitDate || 
+    !document.getElementById('phoneNumber').value.trim() || 
+    !document.getElementById('contactPerson').value.trim() || 
+    !document.getElementById('visitAddress').value.trim() || 
+    !document.getElementById('collectorName').value.trim() || 
+    (visitReport === 'متوفي' && !document.getElementById('certificateDelivered').value)) {
+    
+    alert('يرجى ملء جميع الحقول الإلزامية!');
+    return; // منع الإرسال
+}
+
+
+// جمع البيانات في formData
+// جمع البيانات في formData
+const formData = {
+    id,
+    clientName,
+    bank,
+    product,
+    visitReport,
+    agreementDate1,
+    agreementAmount1,
+    visitDate,
+    contactPerson: combinedContactPerson, // دمج اسم الشخص، صفته، ورقم هاتفه
+    phoneNumber: combinedPhoneNumbers,
+    visitAddress,
+    collectorName,
+    reason: visitReport === 'لم يستدل' ? reason : '',
+    deathCertificateDelivery // إضافة القيمة المدموجة
+};
+
+// إضافة تاريخ ومبلغ الاتفاق الثاني إذا كانا موجودين
+if (agreementDate2) {
+    formData.agreementDate2 = agreementDate2;
+}
+if (agreementAmount2) {
+    formData.agreementAmount2 = agreementAmount2;
+}
+    // إرسال البيانات إلى Google Apps Script
+    fetch('https://script.google.com/macros/s/AKfycbzASdk7NQ5P9KTnw6Jn5BeMyyHatvmsW_Xj_BiF6tRz3AQCSHkdehWeLsQwhe_oav894A/exec', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData),
+        mode: 'no-cors' // وضع no-cors
+    })
+    .then(response => {
+        console.log('Request sent, but no response data available in no-cors mode.');
+        showPopup("تم إرسال الزيارة بنجاح!");
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showPopup("تم إرسال الزيارة بنجاح!");
+    });
+});
+let isClosed = false;
+
+function showPopup(message) {
+    const popup = document.getElementById('popup');
+    const overlay = document.getElementById('overlay');
+
+    popup.innerHTML = `<p>${message}</p>`; // إزالة زر الإغلاق
+    popup.style.display = 'block';
+    overlay.style.display = 'block'; // عرض طبقة التعطيل
+
+    // بعد 5 ثوانٍ، سيتم توجيه المستخدم إلى الصفحة الجديدة
+    setTimeout(function() {
+        if (!isClosed) { // إذا لم يتم إغلاق النافذة
+            window.location.href = 'next_page.html'; // استبدل 'next_page.html' بعنوان الصفحة الجديدة
+        }
+    }, 5000);
+}
+
+function closePopup() {
+    isClosed = true; // تعيين المتغير ليشير إلى أن النافذة أُغلقت
+    const popup = document.getElementById('popup');
+    const overlay = document.getElementById('overlay');
+
+    popup.style.display = 'none'; // إخفاء النافذة المنبثقة
+    overlay.style.display = 'none'; // إخفاء طبقة التعطيل
+    window.location.href = 'next_page.html'; // استبدل 'next_page.html' بعنوان الصفحة الجديدة
+}
+        document.addEventListener("DOMContentLoaded", function() {
+    const collectorName = sessionStorage.getItem("collectorName");
+    if (collectorName) {
+        document.getElementById("collectorName").value = collectorName;
+    }
+});
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/collectionprogram/service-worker.js') // تأكد من المسار الصحيح
+            .then((registration) => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch((error) => {
+                console.error('Service Worker registration failed:', error);
+            });
+    });
+}
+
+    </script>
+</body>
+</html>

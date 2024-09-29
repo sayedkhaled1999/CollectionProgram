@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>برنامج التحصيل</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- نافذة إدخال كلمة المرور واختيار المحصل -->
+  <div id="passwordModal" class="modal">
+    <div class="modal-content">
+      <h2>اختر اسم المحصل وكلمة المرور</h2>
+      <select id="collectorSelect">
+        <option value="">اختر المحصل</option>
+      </select>
+      <input type="password" id="passwordInput" placeholder="كلمة المرور">
+      <button onclick="checkPassword()">دخول</button>
+    </div>
+  </div>
+
+  <h1>برنامج التحصيل (كوليكشن)</h1>
+  <div class="container">
+    <a href="all-customers.html" class="btn"><span>بحث عن جميع العملاء</span></a>
+    <a href="current-month-customers.html" class="btn"><span>عملاء الشهر الحالي</span></a>
+    <a href="write-visit.html" class="btn"><span>اضغط هنا لكتابة الزيارة وإرسالها</span></a>
+    <a href="update-banka-misr.html" class="btn"><span>تحديث بنك مصر</span></a>
+    <a href="#" id="changeCollectorBtn" class="btn" onclick="showPasswordModal()"><span>تغيير المحصل</span></a>
+  </div>
+  
+  <script>
+    let passwordEntered = false; // متغير لتحديد ما إذا كانت كلمة المرور قد تم إدخالها
+    const correctPassword = "1999"; // يمكنك تعديل كلمة المرور هنا
+    const passwordKey = "passwordChanged"; // مفتاح لتحديد ما إذا تم تغيير كلمة المرور
+
+    // عرض النافذة المنبثقة عند تحميل الصفحة
+    document.addEventListener("DOMContentLoaded", function() {
+      loadCollectors(); // تحميل أسماء المحصلين عند عرض النافذة
+      if (!sessionStorage.getItem("collectorName") || sessionStorage.getItem(passwordKey) === "true") {
+        showPasswordModal(); // عرض النافذة فقط إذا لم يكن هناك اسم محصل مخزن أو تم تغيير كلمة المرور
+        sessionStorage.removeItem(passwordKey); // إعادة تعيين مفتاح تغيير كلمة المرور
+      }
+    });
+
+    function showPasswordModal() {
+      var passwordModal = document.getElementById("passwordModal");
+      passwordModal.style.display = "flex";
+    }
+
+    // التحقق من كلمة المرور
+    function checkPassword() {
+      var password = document.getElementById("passwordInput").value;
+
+      if (password === correctPassword) {
+        var collectorSelect = document.getElementById("collectorSelect");
+        if (collectorSelect.value === "") {
+          alert("يرجى اختيار المحصل."); // تأكيد اختيار المحصل
+          return;
+        }
+        selectCollector(collectorSelect.value); // استدعاء دالة selectCollector مع اسم المحصل
+        document.getElementById("passwordModal").style.display = "none"; // إغلاق النافذة
+        passwordEntered = true; // تم إدخال كلمة المرور
+      } else {
+        alert("كلمة المرور غير صحيحة");
+      }
+    }
+
+    function loadCollectors() {
+      const sheetID = '18C4-9Wz0YnaLMYFOxf88UVJ58H4uzU-UtP01Blh2vl8'; // معرف الجدول الخاص بك
+      const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+
+      fetch(url)
+        .then(response => response.text())
+        .then(text => {
+          const json = JSON.parse(text.substr(47).slice(0, -2)); // معالجة النص لتجنب التنسيق الزائد
+          const rows = json.table.rows;
+          const collectorSelect = document.getElementById('collectorSelect');
+
+          // تخطي الصف الأول (A1) وبدء التحميل من الصف الثاني (A2)
+          for (let i = 1; i < rows.length; i++) {
+            const collectorName = rows[i].c[0]?.v; // العمود A في الجدول (مؤشر العمود يبدأ من 0)
+            if (collectorName) {
+              const option = document.createElement('option');
+              option.value = collectorName;
+              option.textContent = collectorName;
+              collectorSelect.appendChild(option);
+            }
+          }
+        })
+        .catch(error => console.error('Error loading collectors:', error));
+    }
+
+    // تخزين اسم المحصل في sessionStorage
+    function selectCollector(collectorName) {
+      sessionStorage.setItem("collectorName", collectorName);
+    }
+
+    // دالة لتغيير كلمة المرور
+    function changePassword() {
+      sessionStorage.setItem(passwordKey, "true"); // تعيين مفتاح تغيير كلمة المرور
+      alert("تم تغيير كلمة المرور. يرجى إعادة تحميل الصفحة."); // رسالة للمستخدم
+    }
+    if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/collectionprogram/service-worker.js') // تأكد من المسار الصحيح
+            .then((registration) => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch((error) => {
+                console.error('Service Worker registration failed:', error);
+            });
+    });
+}
+  </script>
+  
+</body>
+</html>

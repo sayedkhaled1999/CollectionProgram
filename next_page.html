@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+    font-size: 24px; /* حجم الخط */
+    margin: 0; /* إزالة الهوامش الافتراضية */
+    position: absolute; /* تحديد الموقع بشكل مطلق */
+    top: 10px; /* المسافة من الأعلى */
+    left: 50%; /* منتصف العرض */
+    transform: translateX(-50%); /* لتحريك العنصر إلى اليسار بمقدار نصف عرضه ليتوسط الصفحة */
+    text-align: center; /* محاذاة النص إلى الوسط */
+    color: transparent; /* جعل لون النص شفافاً */
+    background: linear-gradient(135deg, #ffffff, #fcf6f6); /* تطبيق تدرج لوني كخلفية للنص */
+    -webkit-background-clip: text; /* قص الخلفية لتناسب النص (للمتصفحات المبنية على WebKit مثل Safari) */
+    background-clip: text; /* قص الخلفية للنص (للأنظمة الأخرى) */
+    -webkit-text-fill-color: transparent; /* جعل النص شفافاً مع تدرج الخلفية (للمتصفحات المبنية على WebKit) */
+    text-shadow: 2px 2px 6px rgb(253, 253, 253); /* إضافة ظل للنص */
+    font-weight: 700; /* تعيين سمك الخط */
+}
+
+        .warning {
+            font-size: 18px;
+            color: #ffcc00; /* لون التحذير */
+            margin-top: 50px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
+        }
+
+        input, select, button {
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 5px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: normal;
+            color: #000;
+        }
+
+        input::placeholder, select {
+            color: #000;
+            opacity: 0.8;
+            font-weight: normal;
+        }
+
+        input:hover, select:hover, input:focus, select:focus {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(118, 75, 162, 0.5);
+        }
+
+        button {
+            width: 48%;
+            margin-top: 10px;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.7);
+            color: #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: normal;
+            font-family: 'Tajawal', sans-serif;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <h1>اختيار مدير الزيارة</h1>
+    <div class="warning">إن لم ترسل مكان الزيارة للمدير على الواتس اب الخاص به، فالزيارة لم تسجل.</div>
+    <div class="container">
+      <label class="label" for="manager-select">اختر مدير الزيارة:</label>
+      <select id="manager-select">
+          <option value="" disabled selected>اختر المدير</option> <!-- خيار افتراضي -->
+      </select>
+      <button onclick="callManager()">اتصل بالمدير</button>
+  </div>
+  
+    <script>
+        async function loadManagers() {
+            const sheetID = '19xuwzUF0OgTXyUZ7RtbScLa2qY9hUW3GjNOdPSJFL7w';
+            const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+        
+            const response = await fetch(url);
+            const data = await response.text();
+        
+            const jsonData = JSON.parse(data.substr(47).slice(0, -2));
+            const rows = jsonData.table.rows;
+
+            const managers = rows.map(row => ({
+                name: row.c[0]?.v, // اسم المدير من العمود A
+                phone: row.c[1]?.v // رقم الهاتف من العمود B
+            }));
+
+            const select = document.getElementById('manager-select');
+            managers.forEach(manager => {
+                const option = document.createElement('option');
+                option.value = manager.phone; // استخدام رقم الهاتف كقيمة
+                option.textContent = manager.name; // استخدام اسم المدير كنص العرض
+                select.appendChild(option);
+            });
+        }
+
+        function callManager() {
+    const select = document.getElementById('manager-select');
+    const phone = select.value;
+    if (phone) { // التأكد من أنه تم اختيار رقم هاتف
+        const callUrl = `tel:${phone}`;
+        window.location.href = callUrl;
+
+        // بعد فترة زمنية قصيرة، ارجع إلى الصفحة السابقة
+        setTimeout(() => {
+            window.history.back(); // ارجع إلى الصفحة السابقة
+        }, 1000); // تأخير لمدة ثانية واحدة (يمكنك ضبطها حسب الحاجة)
+    } else {
+        alert('يرجى اختيار مدير قبل الاتصال.'); // تنبيه المستخدم إذا لم يتم اختيار مدير
+    }
+}
+
+        window.onload = loadManagers;
+        
+        if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/collectionprogram/service-worker.js') // تأكد من المسار الصحيح
+            .then((registration) => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch((error) => {
+                console.error('Service Worker registration failed:', error);
+            });
+    });
+}
+    </script>
+</body>
+</html>
