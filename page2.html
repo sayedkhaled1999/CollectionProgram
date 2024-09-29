@@ -417,16 +417,23 @@ function handleInput() {
     }
 }
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/collectionprogram/service-worker.js') // تأكد من المسار الصحيح
-            .then((registration) => {
-                console.log('Service Worker registered with scope:', registration.scope);
-            })
-            .catch((error) => {
-                console.error('Service Worker registration failed:', error);
-            });
-    });
-}
+        navigator.serviceWorker.register('/collectionprogram/sw.js').then((registration) => {
+            registration.onupdatefound = () => {
+                const installingWorker = registration.installing;
+                installingWorker.onstatechange = () => {
+                    if (installingWorker.state === 'installed') {
+                        if (navigator.serviceWorker.controller) {
+                            // تم التحديث
+                            console.log('New content is available, please refresh.');
+                            if (confirm("يوجد تحديث جديد للتطبيق. هل ترغب في التحديث؟")) {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                };
+            };
+        });
+    }
 
     </script>
 </body>
