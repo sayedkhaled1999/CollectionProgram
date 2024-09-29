@@ -404,6 +404,7 @@
         document.getElementById('results').innerHTML = resultsHTML;
         document.getElementById('results').style.display = 'block';
     }
+            
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/collectionprogram/sw.js').then((registration) => {
             registration.onupdatefound = () => {
