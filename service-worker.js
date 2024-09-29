@@ -1,4 +1,4 @@
-const CACHE_NAME = 'my-app-cache-v2'; // قم بتغيير اسم الكاش لبدء نسخة جديدة
+const CACHE_NAME = 'my-app-cache-v3'; // قم بتغيير اسم الكاش لبدء نسخة جديدة
 const urlsToCache = [
     '/collectionprogram/',                      // المسار الرئيسي للمجلد
     '/collectionprogram/index.html',            // الصفحة الرئيسية
